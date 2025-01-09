@@ -5,6 +5,10 @@ VisualStudioVersion = 17.12.35527.113 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketBooking.Web", "TicketBooking.Web\TicketBooking.Web.csproj", "{FF545630-D824-460E-8D43-0F2B3BAAA3C3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketBooking.Repositories", "TicketBooking.Repositories\TicketBooking.Repositories.csproj", "{F210EFB0-FA29-4735-A623-048F88C6B23F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketBooking.Entities", "TicketBooking.Entities\TicketBooking.Entities.csproj", "{C85A560A-6188-4750-9E04-45C0D34E025C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{FF545630-D824-460E-8D43-0F2B3BAAA3C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF545630-D824-460E-8D43-0F2B3BAAA3C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF545630-D824-460E-8D43-0F2B3BAAA3C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F210EFB0-FA29-4735-A623-048F88C6B23F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F210EFB0-FA29-4735-A623-048F88C6B23F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F210EFB0-FA29-4735-A623-048F88C6B23F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F210EFB0-FA29-4735-A623-048F88C6B23F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C85A560A-6188-4750-9E04-45C0D34E025C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C85A560A-6188-4750-9E04-45C0D34E025C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C85A560A-6188-4750-9E04-45C0D34E025C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C85A560A-6188-4750-9E04-45C0D34E025C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
