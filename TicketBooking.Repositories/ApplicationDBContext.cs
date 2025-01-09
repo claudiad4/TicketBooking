@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using TicketBooking.Entities;
 
 namespace TicketBooking.Repositories
 {
@@ -13,5 +14,8 @@ namespace TicketBooking.Repositories
         { 
         
         }
+
+        public DbSet<Bus> BusInfo { get; set; }
+        public DbSet<SiedzeniaDetails> SiedzeniaBusDetails { get; set; }
     }
 }

@@ -14,4 +14,9 @@
     <ProjectReference Include="..\TicketBooking.Entities\TicketBooking.Entities.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+    <Folder Include="Implementations\" />
+  </ItemGroup>
+
 </Project>
