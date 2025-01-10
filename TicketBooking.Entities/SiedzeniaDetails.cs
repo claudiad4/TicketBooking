@@ -11,7 +11,7 @@ namespace TicketBooking.Entities
         public int Id { get; set; }
         public int NumerSiedzenia { get; set; }
         public int BusID { get; set; }
-        public Bus Bus { get; set; }
+        public Koncert Bus { get; set; }
         public StatusSiedzenia StatusSiedzenia { get; set; }
 
     }

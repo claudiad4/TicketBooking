@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TicketBooking.Entities
 {
-    public class Bus
+    public class Koncert
     {
         public int Id { get; set; }
         public string NumerAutobusu { get; set; }

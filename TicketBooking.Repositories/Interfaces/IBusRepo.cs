@@ -9,10 +9,10 @@ namespace TicketBooking.Repositories.Interfaces
 { 
     public interface IBusRepo
     {
-        Task<IEnumerable<Bus>> GetALL();
-        Task<Bus> GetByID(int id);
-        Task Insert(Bus bus);
-        Task Update(Bus bus);
-        Task Delete(Bus bus);
+        Task<IEnumerable<Koncert>> GetALL();
+        Task<Koncert> GetByID(int id);
+        Task Insert(Koncert bus);
+        Task Update(Koncert bus);
+        Task Delete(Koncert bus);
     }
 }

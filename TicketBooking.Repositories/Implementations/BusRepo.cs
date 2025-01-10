@@ -18,29 +18,29 @@ namespace TicketBooking.Repositories.Implementations
             _context = context;
         }
 
-        public async Task Delete(Bus bus)
+        public async Task Delete(Koncert bus)
         {
-            _context.BusInfo.Remove(bus);
+            _context.KoncertInfo.Remove(bus);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Bus>> GetALL()
+        public async Task<IEnumerable<Koncert>> GetALL()
         {
-            return await _context.BusInfo.ToListAsync();
+            return await _context.KoncertInfo.ToListAsync();
         }
 
-        public async Task<Bus> GetByID(int id)
+        public async Task<Koncert> GetByID(int id)
         {
-            return await _context.BusInfo.FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.KoncertInfo.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task Insert(Bus bus)
+        public async Task Insert(Koncert bus)
         {
-            await _context.BusInfo.AddAsync(bus);
+            await _context.KoncertInfo.AddAsync(bus);
             await _context.SaveChangesAsync();
         }
 
-        public Task Update(Bus bus)
+        public Task Update(Koncert bus)
         {
             throw new NotImplementedException();
         }
