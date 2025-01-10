@@ -7,7 +7,7 @@ using System.Globalization;
 
 namespace TicketBooking.Repositories.Implementations
 {
-    internal class UtilityRepo : IUtilityRepo
+    public class UtilityRepo : IUtilityRepo
     {
         private IWebHostEnvironment _env;
         private IHttpContextAccessor _contextAccessor;

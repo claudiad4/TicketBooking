@@ -1,12 +1,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using TicketBooking.Repositories;
+using TicketBooking.Repositories.Implementations;
+using TicketBooking.Repositories.Interfaces;
+using AutoMapper;
+using TicketBooking.Web.Controllers.Mappers;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+// Rejestracja DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection"),
@@ -14,6 +19,22 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     )
 );
 
+// Rejestracja repozytoriów
+builder.Services.AddScoped<IBusRepo, BusRepo>();
+builder.Services.AddScoped<ISiedzeniaDetailsRepo, SiedzeniaDetailsRepo>();
+builder.Services.AddScoped<IUtilityRepo, UtilityRepo>(); 
+
+// Rejestracja IHttpContextAccessor
+builder.Services.AddHttpContextAccessor(); 
+
+// Rejestracja AutoMapper
+var config = new MapperConfiguration(options =>
+{
+    options.AddProfile(new AutoMapperProfile()); 
+});
+
+var mapper = config.CreateMapper();
+builder.Services.AddSingleton(mapper); 
 
 var app = builder.Build();
 
