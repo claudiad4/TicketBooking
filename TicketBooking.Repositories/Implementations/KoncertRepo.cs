@@ -9,18 +9,18 @@ using TicketBooking.Repositories.Interfaces;
 
 namespace TicketBooking.Repositories.Implementations
 {
-    public class BusRepo : IBusRepo
+    public class KoncertRepo : IKoncertRepo
     {
         private readonly ApplicationDbContext _context;
 
-        public BusRepo(ApplicationDbContext context)
+        public KoncertRepo(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public async Task Delete(Koncert bus)
+        public async Task Delete(Koncert koncert)
         {
-            _context.KoncertInfo.Remove(bus);
+            _context.KoncertInfo.Remove(koncert);
             await _context.SaveChangesAsync();
         }
 
@@ -34,13 +34,13 @@ namespace TicketBooking.Repositories.Implementations
             return await _context.KoncertInfo.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task Insert(Koncert bus)
+        public async Task Insert(Koncert koncert)
         {
-            await _context.KoncertInfo.AddAsync(bus);
+            await _context.KoncertInfo.AddAsync(koncert);
             await _context.SaveChangesAsync();
         }
 
-        public Task Update(Koncert bus)
+        public Task Update(Koncert koncert)
         {
             throw new NotImplementedException();
         }

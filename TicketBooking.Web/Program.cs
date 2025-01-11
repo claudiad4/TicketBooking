@@ -20,8 +20,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 );
 
 // Rejestracja repozytoriów
-builder.Services.AddScoped<IBusRepo, BusRepo>();
-builder.Services.AddScoped<ISiedzeniaDetailsRepo, SiedzeniaDetailsRepo>();
+builder.Services.AddScoped<IKoncertRepo, KoncertRepo>();
+builder.Services.AddScoped<IMiejscaDetailsRepo, MiejscaDetailsRepo>();
 builder.Services.AddScoped<IUtilityRepo, UtilityRepo>(); 
 
 // Rejestracja IHttpContextAccessor

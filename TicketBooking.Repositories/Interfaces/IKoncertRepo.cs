@@ -7,12 +7,12 @@ using TicketBooking.Entities;
 
 namespace TicketBooking.Repositories.Interfaces
 { 
-    public interface IBusRepo
+    public interface IKoncertRepo
     {
         Task<IEnumerable<Koncert>> GetALL();
         Task<Koncert> GetByID(int id);
-        Task Insert(Koncert bus);
-        Task Update(Koncert bus);
-        Task Delete(Koncert bus);
+        Task Insert(Koncert koncert);
+        Task Update(Koncert koncert);
+        Task Delete(Koncert koncert);
     }
 }

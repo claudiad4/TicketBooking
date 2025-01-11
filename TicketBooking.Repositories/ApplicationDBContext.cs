@@ -16,6 +16,6 @@ namespace TicketBooking.Repositories
         }
 
         public DbSet<Koncert> KoncertInfo { get; set; }
-        public DbSet<SiedzeniaDetails> SiedzeniaBusDetails { get; set; }
+        public DbSet<MiejscaDetails> MiejscaKoncertDetails { get; set; }
     }
 }
