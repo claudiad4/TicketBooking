@@ -1,0 +1,61 @@
+﻿@model TicketBooking.Web.ViewModels.KoncertVM.EditKoncertViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit Koncert Detail</h1>
+
+<h4>EditKoncertViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Edit" encytype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NazwaKoncertu" class="control-label"></label>
+                <input asp-for="NazwaKoncertu" class="form-control" />
+                <span asp-validation-for="NazwaKoncertu" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Wykonawca" class="control-label"></label>
+                <input asp-for="Wykonawca" class="form-control" />
+                <span asp-validation-for="Wykonawca" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Opis" class="control-label"></label>
+                <input asp-for="Opis" class="form-control" />
+                <span asp-validation-for="Opis" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaksymalnaIloscSiedzen" class="control-label"></label>
+                <input asp-for="MaksymalnaIloscSiedzen" class="form-control" />
+                <span asp-validation-for="MaksymalnaIloscSiedzen" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="KoncertImageFile" class="control-label"></label>
+                <input asp-for="KoncertImageFile" class="form-control" />
+                <span asp-validation-for="KoncertImageFile" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+    <div class="com-md-4">
+    <img src="@Model.KoncertImage" width="300" height="200"/>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

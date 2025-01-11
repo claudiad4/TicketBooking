@@ -40,9 +40,9 @@ namespace TicketBooking.Repositories.Implementations
             await _context.SaveChangesAsync();
         }
 
-        public Task Update(Koncert koncert)
+        public async Task Update(Koncert koncert)
         {
-            throw new NotImplementedException();
+            await _context.SaveChangesAsync();
         }
     }
 }
