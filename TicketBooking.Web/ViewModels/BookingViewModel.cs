@@ -9,7 +9,7 @@ namespace TicketBooking.Web.ViewModels
         public string NazwaKoncertu { get; set; }
         [DataType(DataType.Date)]
         public DateTime KoncertDate { get; set; }
-        public List<CheckBoxTable> BookingList { get; set; } = new List<CheckBoxTable>();
+        public List<CheckBoxTable> SiedzenieDetail { get; set; } = new List<CheckBoxTable>();
     }
     public class CheckBoxTable 
     { 
