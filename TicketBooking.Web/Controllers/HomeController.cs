@@ -1,21 +1,31 @@
 using System.Diagnostics;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using TicketBooking.Repositories.Implementations;
+using TicketBooking.Repositories.Interfaces;
 using TicketBooking.Web.Models;
+using TicketBooking.Web.ViewModels.KoncertVM;
 
 namespace TicketBooking.Web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private IKoncertRepo _koncertRepo;
+        private IMapper _mapper;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IKoncertRepo koncertRepo, IMapper mapper)
         {
             _logger = logger;
+            _koncertRepo = koncertRepo;
+            _mapper = mapper;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var koncerty = await _koncertRepo.GetALL();
+            var koncertViewModel = _mapper.Map<List<KoncertViewModel>>(koncerty);
+            return View(koncertViewModel);
         }
 
         public IActionResult Privacy()
