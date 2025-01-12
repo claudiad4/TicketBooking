@@ -27,7 +27,11 @@ namespace TicketBooking.Web.Controllers
             var koncertViewModel = _mapper.Map<List<KoncertViewModel>>(koncerty);
             return View(koncertViewModel);
         }
-
+        //[HttpGet]
+        //public async Task <IActionResult> TicketBook(int id) 
+        //{ 
+        //var koncertInfo = 
+        //}
         public IActionResult Privacy()
         {
             return View();
