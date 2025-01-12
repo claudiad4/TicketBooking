@@ -55,7 +55,7 @@ namespace TicketBooking.Web.Migrations
                     b.ToTable("KoncertInfo");
                 });
 
-            modelBuilder.Entity("TicketBooking.Entities.MiejscaDetails", b =>
+            modelBuilder.Entity("TicketBooking.Entities.MiejscaDetail", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -79,7 +79,7 @@ namespace TicketBooking.Web.Migrations
                     b.ToTable("MiejscaKoncertDetails");
                 });
 
-            modelBuilder.Entity("TicketBooking.Entities.MiejscaDetails", b =>
+            modelBuilder.Entity("TicketBooking.Entities.MiejscaDetail", b =>
                 {
                     b.HasOne("TicketBooking.Entities.Koncert", "Koncert")
                         .WithMany()

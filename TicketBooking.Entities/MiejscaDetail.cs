@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TicketBooking.Entities
 {
-    public class MiejscaDetails
+    public class MiejscaDetail
     {
         public int Id { get; set; }
         [Range(1,200)]
@@ -16,6 +16,7 @@ namespace TicketBooking.Entities
         public int KoncertID { get; set; }
         public Koncert Koncert { get; set; }
         public StatusMiejsca StatusMiejsca { get; set; }
+        public ICollection<Booking> Bookings { get; set; }
 
     }
 

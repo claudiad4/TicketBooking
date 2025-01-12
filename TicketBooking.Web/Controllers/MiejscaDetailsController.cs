@@ -35,7 +35,7 @@ namespace TicketBooking.Web.Controllers
         [HttpPost]
         public async Task<IActionResult>Create(CreateMiejscaViewModel vm) 
         { 
-            var model = _mapper.Map<MiejscaDetails>(vm);
+            var model = _mapper.Map<MiejscaDetail>(vm);
             if(await _miejscaDetailRepo.CheckExist(vm.NumerMiejsca, vm.KoncertID))
             { 
             await _miejscaDetailRepo.Insert(model);

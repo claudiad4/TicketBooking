@@ -13,12 +13,14 @@ namespace TicketBooking.Web.Controllers
         private readonly ILogger<HomeController> _logger;
         private IKoncertRepo _koncertRepo;
         private IMapper _mapper;
+        private IBookingRepo _bookingRepo;
 
-        public HomeController(ILogger<HomeController> logger, IKoncertRepo koncertRepo, IMapper mapper)
+        public HomeController(ILogger<HomeController> logger, IKoncertRepo koncertRepo, IMapper mapper, IBookingRepo bookingRepo)
         {
             _logger = logger;
             _koncertRepo = koncertRepo;
             _mapper = mapper;
+            _bookingRepo = bookingRepo;
         }
 
         public async Task<IActionResult> Index()
@@ -27,7 +29,15 @@ namespace TicketBooking.Web.Controllers
             var koncertViewModel = _mapper.Map<List<KoncertViewModel>>(koncerty);
             return View(koncertViewModel);
         }
+        [HttpGet]
+        public async Task<IActionResult> TicketBook(int id)
+        {
+            var koncertInfo = await _koncertRepo.GetByID(id);
+            var booking = await _bookingRepo.GetTodaysBooking(koncertInfo.Id);
 
+            return View();
+
+        }
         public IActionResult Privacy()
         {
             return View();
