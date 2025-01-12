@@ -18,7 +18,7 @@ namespace TicketBooking.Entities
         public required int MaksymalnaIloscSiedzen {  get; set; }
         public string? KoncertImage { get; set; }
         
-        public ICollection<MiejscaDetail> SiedzeniaDetails { get; set; }
-            = new List<MiejscaDetail>();
+        public ICollection<MiejscaDetails> SiedzeniaDetails { get; set; }
+            = new List<MiejscaDetails>();
     }
 }

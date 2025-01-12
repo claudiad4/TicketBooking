@@ -18,11 +18,11 @@ namespace TicketBooking.Web.Controllers.Mappers
             ForMember(dest => dest.KoncertImageFile, opt => opt.Ignore());
             CreateMap<EditKoncertViewModel, Koncert>().
                  ForMember(dest => dest.KoncertImage, opt => opt.Ignore());
-            CreateMap<MiejscaDetail, MiejscaDetailViewModel>()
+            CreateMap<MiejscaDetails, MiejscaDetailViewModel>()
                 .ForMember(dest => dest.NazwaKoncertu, opt => opt.MapFrom(src=>src.Koncert.NazwaKoncertu))
                 .ForMember(dest => dest.StatusMiejsca, opt => opt.MapFrom(src=>src.StatusMiejsca.ToString()));
-            CreateMap<CreateMiejscaViewModel, MiejscaDetail>();
-            CreateMap<MiejscaDetail, EditMiejscaDetailsViewModel>().ReverseMap();
+            CreateMap<CreateMiejscaViewModel, MiejscaDetails>();
+            CreateMap<MiejscaDetails, EditMiejscaDetailsViewModel>().ReverseMap();
         }
 
 

@@ -11,7 +11,7 @@ namespace TicketBooking.Entities
     {
         public int Id { get; set; }
         public int MiejscaDetailsID { get; set; }
-        public MiejscaDetail MiejscaDetails { get; set; }
+        public MiejscaDetails MiejscaDetails { get; set; }
         [DataType(DataType.Date)]
         public DateTime Date {  get; set; }
         public string VIP   { get; set; }

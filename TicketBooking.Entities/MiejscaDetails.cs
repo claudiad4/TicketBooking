@@ -2,7 +2,7 @@
 
 namespace TicketBooking.Entities
 {
-    public class MiejscaDetail
+    public class MiejscaDetails
     {
         public int Id { get; set; }
         [Range(1,200)]

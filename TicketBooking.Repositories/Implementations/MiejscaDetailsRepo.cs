@@ -25,14 +25,14 @@ namespace TicketBooking.Repositories.Implementations
         }
 
         // Usunięcie miejsca
-        public async Task Delete(MiejscaDetail miejsce)
+        public async Task Delete(MiejscaDetails miejsce)
         {
             _context.MiejscaKoncertDetails.Remove(miejsce);
             await _context.SaveChangesAsync();
         }
 
         // Pobranie wszystkich miejsc
-        public async Task<IEnumerable<MiejscaDetail>> GetALL()
+        public async Task<IEnumerable<MiejscaDetails>> GetALL()
         {
             return await _context.MiejscaKoncertDetails
                 .Include(x => x.Koncert) // Ładowanie powiązanego Koncert
@@ -40,7 +40,7 @@ namespace TicketBooking.Repositories.Implementations
         }
 
         // Pobranie miejsca po ID
-        public async Task<MiejscaDetail> GetByID(int id)
+        public async Task<MiejscaDetails> GetByID(int id)
         {
             return await _context.MiejscaKoncertDetails
                 .Include(x => x.Koncert) // Ładowanie powiązanego Koncert
@@ -48,14 +48,14 @@ namespace TicketBooking.Repositories.Implementations
         }
 
         // Dodanie nowego miejsca
-        public async Task Insert(MiejscaDetail miejsce)
+        public async Task Insert(MiejscaDetails miejsce)
         {
             await _context.MiejscaKoncertDetails.AddAsync(miejsce);
             await _context.SaveChangesAsync();
         }
 
         // Aktualizacja miejsca
-        public async Task Update(MiejscaDetail miejsce)
+        public async Task Update(MiejscaDetails miejsce)
         {
             _context.MiejscaKoncertDetails.Update(miejsce);
             await _context.SaveChangesAsync();

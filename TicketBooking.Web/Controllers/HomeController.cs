@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using TicketBooking.Repositories.Implementations;
 using TicketBooking.Repositories.Interfaces;
 using TicketBooking.Web.Models;
+using TicketBooking.Web.ViewModels;
 using TicketBooking.Web.ViewModels.KoncertVM;
 
 namespace TicketBooking.Web.Controllers
@@ -32,8 +33,11 @@ namespace TicketBooking.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> TicketBook(int id)
         {
+            BookingViewModel vm = new BookingViewModel();
             var koncertInfo = await _koncertRepo.GetByID(id);
             var booking = await _bookingRepo.GetTodaysBooking(koncertInfo.Id);
+            vm.KoncertDate = DateTime.Today;
+            foreach (var Miejsce in koncertInfo.MiejscaDetail)
 
             return View();
 

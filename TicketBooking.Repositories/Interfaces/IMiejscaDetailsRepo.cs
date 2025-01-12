@@ -9,11 +9,11 @@ namespace TicketBooking.Repositories.Interfaces
 {
     public interface IMiejscaDetailsRepo
     {
-        Task<IEnumerable<MiejscaDetail>> GetALL();
-        Task<MiejscaDetail> GetByID(int id);
-        Task Insert(MiejscaDetail siedzenie);
-        Task Update(MiejscaDetail siedzenie);
-        Task Delete(MiejscaDetail siedzenie);
+        Task<IEnumerable<MiejscaDetails>> GetALL();
+        Task<MiejscaDetails> GetByID(int id);
+        Task Insert(MiejscaDetails siedzenie);
+        Task Update(MiejscaDetails siedzenie);
+        Task Delete(MiejscaDetails siedzenie);
         Task<bool> CheckExist(int numerMiejsca, int koncertID);
     }
 }

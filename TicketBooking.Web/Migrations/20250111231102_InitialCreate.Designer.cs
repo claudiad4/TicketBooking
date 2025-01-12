@@ -55,7 +55,7 @@ namespace TicketBooking.Web.Migrations
                     b.ToTable("KoncertInfo");
                 });
 
-            modelBuilder.Entity("TicketBooking.Entities.MiejscaDetail", b =>
+            modelBuilder.Entity("TicketBooking.Entities.MiejscaDetails", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
