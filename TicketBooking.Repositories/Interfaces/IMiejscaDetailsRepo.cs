@@ -14,5 +14,6 @@ namespace TicketBooking.Repositories.Interfaces
         Task Insert(MiejscaDetails siedzenie);
         Task Update(MiejscaDetails siedzenie);
         Task Delete(MiejscaDetails siedzenie);
+        Task<bool> CheckExist(int numerMiejsca, int koncertID);
     }
 }

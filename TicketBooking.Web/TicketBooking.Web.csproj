@@ -21,8 +21,4 @@
     <ProjectReference Include="..\TicketBooking.Repositories\TicketBooking.Repositories.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ViewModels\MiejscaVM\" />
-  </ItemGroup>
-
 </Project>
