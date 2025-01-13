@@ -41,7 +41,7 @@ public class KoncertyController : Controller
             model.KoncertImage = await _utilityRepo.SaveImagePath(KoncertImage, vm.KoncertImage);
         }
         await _koncertRepo.Insert(model);
-        TempData["Sukces"] = "Twój wpis został dodany.";
+        TempData["success"] = "Twój wpis został dodany.";
         return RedirectToAction("Index");
     }
 
@@ -69,6 +69,13 @@ public class KoncertyController : Controller
         koncert = _mapper.Map(vm, koncert);
 
         await _koncertRepo.Update(koncert);
+        return RedirectToAction("Index");
+    }
+    [HttpGet]
+    public async Task<IActionResult> Delete(int id) 
+    {
+        var koncert = await _koncertRepo.GetByID(id);
+        await _koncertRepo.Delete(koncert);
         return RedirectToAction("Index");
     }
 
