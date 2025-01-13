@@ -36,14 +36,14 @@
 
                 @if (Model.SeatDetail[i].IsChecked == true)
                 {
-                    <input asp-for="SeatDetail[i].IsChecked" readonly />
+                    <input asp-for="SeatDetail[i].IsChecked" disabled />
                     @Model.SeatDetail[i].NumerMiejsca
                     <img src="~/SeatImage/@Model.SeatDetail[i].MiejsceImage" height="32" width="32" />
                 }
 
                 @if (Model.SeatDetail[i].IsChecked == false)
                 {
-                    <input asp-for="SeatDetail[i].IsChecked" readonly />
+                    <input asp-for="SeatDetail[i].IsChecked" disabled />
                     @Model.SeatDetail[i].NumerMiejsca
                     <img src="~/SeatImage/@Model.SeatDetail[i].MiejsceImage" height="32" width="32" />
                 }

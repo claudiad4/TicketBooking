@@ -63,7 +63,8 @@ namespace TicketBooking.Web.Controllers
                 {
                     Id = KoncertSiedzenie.Id,
                     MiejsceImage = isSeatOccupied ? "RedChair.png" : "GreenChair.png",
-                    IsChecked = isSeatOccupied
+                    IsChecked = isSeatOccupied,
+                    NumerMiejsca = KoncertSiedzenie.NumerMiejsca
                 });
             }
 
