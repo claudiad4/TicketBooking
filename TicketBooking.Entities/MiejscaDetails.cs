@@ -10,6 +10,7 @@ namespace TicketBooking.Entities
         public int KoncertID { get; set; }
         public Koncert Koncert { get; set; }
         public StatusMiejsca StatusMiejsca { get; set; }
+        public ICollection <KupBilet> KupBilets { get; set; }
 
     }
 

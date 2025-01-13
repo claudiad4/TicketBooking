@@ -23,6 +23,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IKoncertRepo, KoncertRepo>();
 builder.Services.AddScoped<IMiejscaDetailsRepo, MiejscaDetailsRepo>();
 builder.Services.AddScoped<IUtilityRepo, UtilityRepo>(); 
+builder.Services.AddScoped<IKupBiletRepo, KupBiletRepo>();
 
 // Rejestracja IHttpContextAccessor
 builder.Services.AddHttpContextAccessor(); 

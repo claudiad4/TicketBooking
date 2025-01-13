@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace TicketBooking.Entities
 {
-    internal class KupBilet
+    public class KupBilet
     {
         public int Id { get; set; }
         public int MiejscaDetailsId { get; set; }
-        public MiejscaDetails MiejscaDetails { get; set}
+        public MiejscaDetails MiejscaDetails { get; set; }
         [DataType(DataType.Date)]
         public DateTime Data { get; set; }
     }
