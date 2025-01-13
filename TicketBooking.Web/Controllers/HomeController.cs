@@ -14,14 +14,14 @@ namespace TicketBooking.Web.Controllers
         private readonly ILogger<HomeController> _logger;
         private IKoncertRepo _koncertRepo;
         private IMapper _mapper;
-        private IBookingRepo _bookingRepo;
+       
 
-        public HomeController(ILogger<HomeController> logger, IKoncertRepo koncertRepo, IMapper mapper, IBookingRepo bookingRepo)
+        public HomeController(ILogger<HomeController> logger, IKoncertRepo koncertRepo, IMapper mapper)
         {
             _logger = logger;
             _koncertRepo = koncertRepo;
             _mapper = mapper;
-            _bookingRepo = bookingRepo;
+    
         }
 
         public async Task<IActionResult> Index()
