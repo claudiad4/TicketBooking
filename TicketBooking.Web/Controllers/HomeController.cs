@@ -35,10 +35,25 @@ namespace TicketBooking.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> TicketBook(int id)
         {
+            KupBiletViewModel vm = new KupBiletViewModel();
             var koncertInfo = await _koncertRepo.GetByID(id);
-            var kupbilet = await _kupBiletRepo.GetTodaysKupBilet(koncertInfo.Id);
+            var kupbilet = _kupBiletRepo.GetTodaysKupBilet(koncertInfo.Id).GetAwaiter().GetResult()
+                .Select(x=>x.MiejscaDetailsId).ToList();
+            vm.KoncertImage = koncertInfo.KoncertImage;
+            vm.NazwaKoncertu = koncertInfo.NazwaKoncertu;
+            vm.KoncertDate = DateTime.Today;
+            foreach (var KoncertSiedzenie in koncertInfo.SiedzeniaDetails)
+            {
+                vm.SeatDetail.Add(new CheckBoxTable
+                {
+                    Id = KoncertSiedzenie.Id,
+                    MiejsceImage = kupbilet.Contains(KoncertSiedzenie.Id) ? "RedChair.png" : "GreenChair.png",
+                    IsChecked = kupbilet.Contains(KoncertSiedzenie.Id)
 
-            return View();
+                });
+            }
+
+            return View(vm);
 
         }
 
