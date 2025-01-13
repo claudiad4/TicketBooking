@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace TicketBooking.Entities
 {
@@ -16,6 +10,7 @@ namespace TicketBooking.Entities
         public int KoncertID { get; set; }
         public Koncert Koncert { get; set; }
         public StatusMiejsca StatusMiejsca { get; set; }
+        public ICollection<Booking> Bookings { get; set; }
 
     }
 
