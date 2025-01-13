@@ -36,26 +36,41 @@ namespace TicketBooking.Web.Controllers
         public async Task<IActionResult> TicketBook(int id)
         {
             KupBiletViewModel vm = new KupBiletViewModel();
+
+            // Pobranie informacji o koncercie
             var koncertInfo = await _koncertRepo.GetByID(id);
-            var kupbilet = _kupBiletRepo.GetTodaysKupBilet(koncertInfo.Id).GetAwaiter().GetResult()
-                .Select(x=>x.MiejscaDetailsId).ToList();
+
+            // Pobranie listy kupionych biletów na dzisiejszy dzieñ
+            var kupbilet = _kupBiletRepo.GetTodaysKupBilet(koncertInfo.Id)
+                .GetAwaiter()
+                .GetResult()
+                .Select(x => x.MiejscaDetailsId)
+                .ToList();
+
+            // Ustawienie danych dla modelu widoku
             vm.KoncertImage = koncertInfo.KoncertImage;
             vm.NazwaKoncertu = koncertInfo.NazwaKoncertu;
             vm.KoncertDate = DateTime.Today;
+
+            // Przetwarzanie szczegó³ów siedzeñ i dodanie ich do widoku
             foreach (var KoncertSiedzenie in koncertInfo.SiedzeniaDetails)
             {
+                // Sprawdzenie, czy miejsce jest zajête
+                bool isSeatOccupied = kupbilet.Contains(KoncertSiedzenie.Id);
+
+                // Dodanie szczegó³ów miejsca do listy
                 vm.SeatDetail.Add(new CheckBoxTable
                 {
                     Id = KoncertSiedzenie.Id,
-                    MiejsceImage = kupbilet.Contains(KoncertSiedzenie.Id) ? "RedChair.png" : "GreenChair.png",
-                    IsChecked = kupbilet.Contains(KoncertSiedzenie.Id)
-
+                    MiejsceImage = isSeatOccupied ? "RedChair.png" : "GreenChair.png",
+                    IsChecked = isSeatOccupied
                 });
             }
 
+            // Przekazanie modelu widoku do widoku
             return View(vm);
-
         }
+
 
 
         public IActionResult Privacy()
