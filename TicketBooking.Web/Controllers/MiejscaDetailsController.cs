@@ -22,10 +22,83 @@ namespace TicketBooking.Web.Controllers
 
         public async Task <IActionResult> Index(MiejscaDetailViewModel miejscaDetailViewModel)
         {
-            var miejscaDetails = await _miejscaDetailRepo.GetALL();
-            var vm = _mapper.Map<List<MiejscaDetailViewModel >> (miejscaDetails);
-            return View(vm);
+            //var miejscaDetails = await _miejscaDetailRepo.GetALL();
+            //var vm = _mapper.Map<List<MiejscaDetailViewModel >> (miejscaDetails);
+            return View();
         }
+
+        [HttpPost]
+        [HttpPost]
+        public async Task<IActionResult> GetSeatDetails()
+        {
+            try
+            {
+                // Pobranie parametrów od DataTables
+                var draw = Request.Form["draw"].FirstOrDefault();
+                var start = Request.Form["start"].FirstOrDefault();
+                var length = Request.Form["length"].FirstOrDefault();
+                var sortColumnIndex = Request.Form["order[0][column]"].FirstOrDefault();
+                var sortColumnDir = Request.Form["order[0][dir]"].FirstOrDefault();
+                var searchValue = Request.Form["search[value]"].FirstOrDefault();
+
+                int pageSize = !string.IsNullOrEmpty(length) ? Convert.ToInt32(length) : 0;
+                int skip = !string.IsNullOrEmpty(start) ? Convert.ToInt32(start) : 0;
+
+                // Pobranie danych
+                var seatDetails = await _miejscaDetailRepo.GetALL();
+
+                // Filtrowanie danych (wyszukiwanie)
+                if (!string.IsNullOrEmpty(searchValue))
+                {
+                    seatDetails = seatDetails.Where(m => m.Koncert != null && m.Koncert.NazwaKoncertu.Contains(searchValue));
+                }
+
+                // Sortowanie danych
+                if (!string.IsNullOrEmpty(sortColumnIndex) && !string.IsNullOrEmpty(sortColumnDir))
+                {
+                    seatDetails = sortColumnIndex switch
+                    {
+                        "1" => sortColumnDir == "asc"
+                            ? seatDetails.OrderBy(m => m.NumerMiejsca)
+                            : seatDetails.OrderByDescending(m => m.NumerMiejsca),
+                        "2" => sortColumnDir == "asc"
+                            ? seatDetails.OrderBy(m => m.Koncert.NazwaKoncertu)
+                            : seatDetails.OrderByDescending(m => m.Koncert.NazwaKoncertu),
+                        "3" => sortColumnDir == "asc"
+                            ? seatDetails.OrderBy(m => m.StatusMiejsca)
+                            : seatDetails.OrderByDescending(m => m.StatusMiejsca),
+                        _ => seatDetails
+                    };
+                }
+
+                // Obliczanie ilości rekordów
+                int recordsTotal = seatDetails.Count();
+
+                // Stronicowanie
+                var data = seatDetails.Skip(skip).Take(pageSize).ToList();
+
+                // Mapowanie do ViewModel
+                var vm = _mapper.Map<List<MiejscaDetailViewModel>>(data);
+
+                // Przygotowanie danych JSON dla DataTables
+                var jsonData = new
+                {
+                    draw = draw,
+                    recordsFiltered = recordsTotal,
+                    recordsTotal = recordsTotal,
+                    data = vm
+                };
+
+                return Ok(jsonData);
+            }
+            catch (Exception ex)
+            {
+                // Obsługa błędów
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
+
+
         public async Task<IActionResult> Create() 
         { 
             var koncerty = await _koncertRepo.GetALL();

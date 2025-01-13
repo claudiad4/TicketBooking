@@ -4,51 +4,60 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Sczegóły miejsc</h1>
+<h1>Szczegóły miejsc</h1>
 
 <p>
     <a asp-action="Create" class="btn btn-info">Create New</a>
 </p>
-<table class="table">
+<table width="100%" id="seatTable" class="table table-stripped table-bordered dt-head-nowrap">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+               Id
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NumerMiejsca)
+               Numer Miejsca
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NazwaKoncertu)
+               Nazwa Koncertu
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StatusMiejsca)
+               Status Miejsca
             </th>
             <th></th>
         </tr>
     </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumerMiejsca)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NazwaKoncertu)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StatusMiejsca)
-            </td>
-            <td>
-                @* @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }) *@
-                    <partial name="_listlinks" model="item.Id" />
-            </td>
-        </tr>
-}
-    </tbody>
+    @* <tbody> *@
+        <!--
+       @*  @foreach (var item in Model)
+        {
+                <tr>
+                    <td> *@
+                    @* @* @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                    @Html.DisplayFor(modelItem => item.NumerMiejsca)
+                    </td>
+                    <td>
+                    @Html.DisplayFor(modelItem => item.NazwaKoncertu)
+                    </td>
+                    <td>
+                    @Html.DisplayFor(modelItem => item.StatusMiejsca) *@ *
+                    </td>
+                    <td>
+                    @* @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id }) *@
+                            @* <partial name="_listlinks" model="item.Id" /> *@
+                    </td>
+                </tr>
+        }
+        </tbody>
+        -->
+
 </table>
+@section scripts
+{
+    <script src="~/js/miejscaDetails.js"></script>
+}
+
