@@ -31,33 +31,58 @@ namespace TicketBooking.Web.Controllers
         {
             try
             {
+                // Pobranie parametrów od DataTables
                 var draw = Request.Form["draw"].FirstOrDefault();
                 var start = Request.Form["start"].FirstOrDefault();
                 var length = Request.Form["length"].FirstOrDefault();
+                var sortColumnIndex = Request.Form["order[0][column]"].FirstOrDefault();
+                var sortColumnDir = Request.Form["order[0][dir]"].FirstOrDefault();
                 var searchValue = Request.Form["search[value]"].FirstOrDefault();
 
                 int pageSize = !string.IsNullOrEmpty(length) ? Convert.ToInt32(length) : 0;
                 int skip = !string.IsNullOrEmpty(start) ? Convert.ToInt32(start) : 0;
 
-                // Pobierz wszystkie szczegóły miejsc
+                // Pobranie danych
                 var seatDetails = await _miejscaDetailRepo.GetALL();
 
-                // Filtrowanie po nazwie koncertu (searchValue)
+                // Filtrowanie danych (wyszukiwanie)
                 if (!string.IsNullOrEmpty(searchValue))
                 {
-                    seatDetails = seatDetails.Where(m => m.Koncert.NazwaKoncertu.Contains(searchValue));
+                    seatDetails = seatDetails.Where(m =>
+                        (m.Koncert != null && m.Koncert.NazwaKoncertu.Contains(searchValue, StringComparison.OrdinalIgnoreCase)) ||
+                        m.NumerMiejsca.ToString().Contains(searchValue, StringComparison.OrdinalIgnoreCase) ||
+                        m.StatusMiejsca.ToString().Contains(searchValue, StringComparison.OrdinalIgnoreCase)
+                    );
                 }
 
-                // Liczba wszystkich rekordów po filtrowaniu
+                // Sortowanie danych
+                if (!string.IsNullOrEmpty(sortColumnIndex) && !string.IsNullOrEmpty(sortColumnDir))
+                {
+                    seatDetails = sortColumnIndex switch
+                    {
+                        "1" => sortColumnDir == "asc"
+                            ? seatDetails.OrderBy(m => m.NumerMiejsca)
+                            : seatDetails.OrderByDescending(m => m.NumerMiejsca),
+                        "2" => sortColumnDir == "asc"
+                            ? seatDetails.OrderBy(m => m.Koncert.NazwaKoncertu)
+                            : seatDetails.OrderByDescending(m => m.Koncert.NazwaKoncertu),
+                        "3" => sortColumnDir == "asc"
+                            ? seatDetails.OrderBy(m => m.StatusMiejsca)
+                            : seatDetails.OrderByDescending(m => m.StatusMiejsca),
+                        _ => seatDetails
+                    };
+                }
+
+                // Obliczanie ilości rekordów
                 int recordsTotal = seatDetails.Count();
 
                 // Stronicowanie
                 var data = seatDetails.Skip(skip).Take(pageSize).ToList();
 
-                // Mapowanie danych na ViewModel
+                // Mapowanie do ViewModel
                 var vm = _mapper.Map<List<MiejscaDetailViewModel>>(data);
 
-                // Przygotowanie danych w formacie JSON
+                // Przygotowanie danych JSON dla DataTables
                 var jsonData = new
                 {
                     draw = draw,
@@ -75,23 +100,8 @@ namespace TicketBooking.Web.Controllers
             }
         }
 
-        public async Task<IActionResult> Create() 
-        { 
-            var koncerty = await _koncertRepo.GetALL();
-            ViewBag.koncertyList = new SelectList(koncerty, "Id", "NazwaKoncertu");
-            return View();
-        }
-        [HttpPost]
-        public async Task<IActionResult>Create(CreateMiejscaViewModel vm) 
-        { 
-            var model = _mapper.Map<MiejscaDetails>(vm);
-            if(await _miejscaDetailRepo.CheckExist(vm.NumerMiejsca, vm.KoncertID))
-            { 
-            await _miejscaDetailRepo.Insert(model);
-            }
-            await _miejscaDetailRepo.Insert(model);
-            return RedirectToAction("Index");
-        }
+
+
         [HttpGet]
 
         public async Task<IActionResult> Edit(int id) 
