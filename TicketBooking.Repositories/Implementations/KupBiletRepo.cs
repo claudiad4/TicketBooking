@@ -34,12 +34,36 @@ namespace TicketBooking.Repositories.Implementations
 
         public async Task SaveBooking(List<KupBilet> kupBilets)
         {
-            // Dodanie nowych rezerwacji do bazy danych
-            await _context.KupBilet.AddRangeAsync(kupBilets);
+            try
+            {
+                // Dodanie rezerwacji do tabeli KupBilet
+                await _context.KupBilet.AddRangeAsync(kupBilets);
 
-            // Zapisanie zmian w bazie danych
-            await _context.SaveChangesAsync();
+                // Pobranie ID miejsc do aktualizacji
+                var miejscaIds = kupBilets.Select(b => b.MiejscaDetailsId).ToList();
+
+                // Aktualizacja statusu miejsc w tabeli MiejscaKoncertDetails
+                var miejscaDoAktualizacji = _context.MiejscaKoncertDetails
+                    .Where(m => miejscaIds.Contains(m.Id))
+                    .ToList();
+
+                foreach (var miejsce in miejscaDoAktualizacji)
+                {
+                    miejsce.StatusMiejsca = 0; // 0 oznacza "Zarezerwowane"
+                    Console.WriteLine($"Zaktualizowano miejsce ID={miejsce.Id} na StatusMiejsca=0");
+                }
+
+                // Zapisanie zmian w bazie
+                await _context.SaveChangesAsync();
+                Console.WriteLine("Rezerwacje i status miejsc zapisane pomyślnie.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Błąd podczas zapisu rezerwacji: {ex.Message}");
+                throw;
+            }
         }
+
 
     }
 }
