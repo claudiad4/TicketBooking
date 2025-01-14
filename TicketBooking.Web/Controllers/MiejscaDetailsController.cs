@@ -22,10 +22,59 @@ namespace TicketBooking.Web.Controllers
 
         public async Task <IActionResult> Index(MiejscaDetailViewModel miejscaDetailViewModel)
         {
-            var miejscaDetails = await _miejscaDetailRepo.GetALL();
-            var vm = _mapper.Map<List<MiejscaDetailViewModel >> (miejscaDetails);
-            return View(vm);
+            //var miejscaDetails = await _miejscaDetailRepo.GetALL();
+            //var vm = _mapper.Map<List<MiejscaDetailViewModel >> (miejscaDetails);
+            return View();
         }
+        [HttpPost]
+        public async Task<IActionResult> GetSeatDetails()
+        {
+            try
+            {
+                var draw = Request.Form["draw"].FirstOrDefault();
+                var start = Request.Form["start"].FirstOrDefault();
+                var length = Request.Form["length"].FirstOrDefault();
+                var searchValue = Request.Form["search[value]"].FirstOrDefault();
+
+                int pageSize = !string.IsNullOrEmpty(length) ? Convert.ToInt32(length) : 0;
+                int skip = !string.IsNullOrEmpty(start) ? Convert.ToInt32(start) : 0;
+
+                // Pobierz wszystkie szczegóły miejsc
+                var seatDetails = await _miejscaDetailRepo.GetALL();
+
+                // Filtrowanie po nazwie koncertu (searchValue)
+                if (!string.IsNullOrEmpty(searchValue))
+                {
+                    seatDetails = seatDetails.Where(m => m.Koncert.NazwaKoncertu.Contains(searchValue));
+                }
+
+                // Liczba wszystkich rekordów po filtrowaniu
+                int recordsTotal = seatDetails.Count();
+
+                // Stronicowanie
+                var data = seatDetails.Skip(skip).Take(pageSize).ToList();
+
+                // Mapowanie danych na ViewModel
+                var vm = _mapper.Map<List<MiejscaDetailViewModel>>(data);
+
+                // Przygotowanie danych w formacie JSON
+                var jsonData = new
+                {
+                    draw = draw,
+                    recordsFiltered = recordsTotal,
+                    recordsTotal = recordsTotal,
+                    data = vm
+                };
+
+                return Ok(jsonData);
+            }
+            catch (Exception ex)
+            {
+                // Obsługa błędów
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
+
         public async Task<IActionResult> Create() 
         { 
             var koncerty = await _koncertRepo.GetALL();
