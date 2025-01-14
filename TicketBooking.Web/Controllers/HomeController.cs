@@ -34,6 +34,36 @@ namespace TicketBooking.Web.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> GetSeatDetailsByDate(int koncertId, DateTime koncertDate)
+        {
+            try
+            {
+                var zakupioneMiejsca = await _kupBiletRepo.GetTodaysKupBilet(koncertId, koncertDate);
+                var miejscaIds = zakupioneMiejsca.Select(x => x.MiejscaDetailsId).ToList();
+
+                var koncert = await _koncertRepo.GetByID(koncertId);
+                if (koncert == null)
+                {
+                    return NotFound("Koncert nie zosta³ znaleziony.");
+                }
+
+                var seatDetails = koncert.SiedzeniaDetails.Select(seat => new CheckBoxTable
+                {
+                    Id = seat.Id,
+                    MiejsceImage = miejscaIds.Contains(seat.Id) ? "RedChair.png" : "GreenChair.png",
+                    IsChecked = miejscaIds.Contains(seat.Id),
+                    NumerMiejsca = seat.NumerMiejsca
+                }).ToList();
+
+                return Json(seatDetails);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Wyst¹pi³ b³¹d: {ex.Message}");
+            }
+        }
+
+        [HttpGet]
         public async Task<IActionResult> TicketBook(int id)
         {
             try
