@@ -18,7 +18,7 @@ namespace TicketBooking.Repositories.Implementations
             _context = context;
         }
 
-        public async Task<IEnumerable<KupBilet>> GetTodaysKupBilet(int koncertId)
+        public async Task<IEnumerable<KupBilet>> GetTodaysKupBilet(int koncertId, DateTime koncertData)
         {
             var today = DateTime.Today;
 

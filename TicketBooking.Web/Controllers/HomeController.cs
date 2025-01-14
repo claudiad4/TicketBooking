@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using TicketBooking.Entities;
 using TicketBooking.Repositories.Implementations;
 using TicketBooking.Repositories.Interfaces;
 using TicketBooking.Web.Models;
@@ -35,42 +36,58 @@ namespace TicketBooking.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> TicketBook(int id)
         {
-            KupBiletViewModel vm = new KupBiletViewModel();
-
-            // Pobranie informacji o koncercie
-            var koncertInfo = await _koncertRepo.GetByID(id);
-
-            // Pobranie listy kupionych biletów na dzisiejszy dzieñ
-            var kupbilet = _kupBiletRepo.GetTodaysKupBilet(koncertInfo.Id)
-                .GetAwaiter()
-                .GetResult()
-                .Select(x => x.MiejscaDetailsId)
-                .ToList();
-
-            // Ustawienie danych dla modelu widoku
-            vm.KoncertImage = koncertInfo.KoncertImage;
-            vm.NazwaKoncertu = koncertInfo.NazwaKoncertu;
-            vm.KoncertDate = DateTime.Today;
-
-            // Przetwarzanie szczegó³ów siedzeñ i dodanie ich do widoku
-            foreach (var KoncertSiedzenie in koncertInfo.SiedzeniaDetails)
+            try
             {
-                // Sprawdzenie, czy miejsce jest zajête
-                bool isSeatOccupied = kupbilet.Contains(KoncertSiedzenie.Id);
+                KupBiletViewModel vm = new KupBiletViewModel();
 
-                // Dodanie szczegó³ów miejsca do listy
-                vm.SeatDetail.Add(new CheckBoxTable
+                // Pobranie informacji o koncercie
+                var koncertInfo = await _koncertRepo.GetByID(id);
+
+                if (koncertInfo == null)
                 {
-                    Id = KoncertSiedzenie.Id,
-                    MiejsceImage = isSeatOccupied ? "RedChair.png" : "GreenChair.png",
-                    IsChecked = isSeatOccupied,
-                    NumerMiejsca = KoncertSiedzenie.NumerMiejsca
-                });
-            }
+                    return NotFound("Koncert nie zosta³ znaleziony.");
+                }
 
-            // Przekazanie modelu widoku do widoku
-            return View(vm);
+                // Pobranie listy kupionych biletów
+                var kupbilet = _kupBiletRepo.GetTodaysKupBilet(koncertInfo.Id, DateTime.Today)
+                    .GetAwaiter()
+                    .GetResult()
+                    .Select(x => x.MiejscaDetailsId)
+                    .ToList();
+
+                // Ustawienie danych dla modelu widoku
+                vm.KoncertImage = koncertInfo.KoncertImage;
+                vm.NazwaKoncertu = koncertInfo.NazwaKoncertu;
+                vm.KoncertDate = DateTime.Today;
+
+                // Przetwarzanie szczegó³ów miejsc
+                foreach (var koncertSeat in koncertInfo.SiedzeniaDetails)
+                {
+                    vm.SeatDetail.Add(new CheckBoxTable
+                    {
+                        Id = koncertSeat.Id,
+                        MiejsceImage = ((StatusMiejsca)koncertSeat.StatusMiejsca) switch
+                        {
+                            StatusMiejsca.Zarezerwowane => "GreenChair.png",     // 0
+                            StatusMiejsca.Dostêpne => "RedChair.png",     // 1
+                            StatusMiejsca.Niedostêpne => "YellowChair.png", // 2
+                            _ => "Unknown.png" // Dla nieznanego statusu
+                        },
+                        IsChecked = kupbilet.Contains(koncertSeat.Id),
+                        NumerMiejsca = koncertSeat.NumerMiejsca
+                    });
+                }
+
+                return View(vm);
+            }
+            catch (Exception ex)
+            {
+                // Obs³uga b³êdów
+                return BadRequest($"Wyst¹pi³ b³¹d: {ex.Message}");
+            }
         }
+
+
 
 
 
