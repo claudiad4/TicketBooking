@@ -1,70 +1,98 @@
 ﻿@model TicketBooking.Web.ViewModels.KupBiletViewModel
 
-
 <div class="row mt-2">
-    <div class"col-md-4">
-        <div class"row">
-            <img src="@Model.KoncertImage" height="200px" width="250px"/>
+    <div class="col-md-4">
+        <div class="row">
+            <img src="@Model.KoncertImage" height="200" width="250" />
             <div>
                 <h2>@Model.NazwaKoncertu</h2>
             </div>
-
         </div>
-
     </div>
+
     <div class="col-md-8">
         <form asp-action="TicketBook">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
             <div class="form-group">
                 <label asp-for="Id" class="control-label"></label>
                 <input asp-for="Id" class="form-control" />
                 <span asp-validation-for="Id" class="text-danger"></span>
             </div>
-            @* <div class="form-group">
-                <label asp-for="KoncertImage" class="control-label"></label>
-                <input asp-for="KoncertImage" class="form-control" />
-                <span asp-validation-for="KoncertImage" class="text-danger"></span>
+
+            <div id="seatDetailsContainer">
+                @for (int i = 0; i < Model.SeatDetail.Count; i++)
+                {
+                    <input type="hidden" asp-for="SeatDetail[i].Id" />
+
+                    @if (Model.SeatDetail[i].IsChecked)
+                    {
+                        <!-- Checkbox dla zarezerwowanego miejsca (edytowalny i checked) -->
+                        <input type="checkbox" asp-for="SeatDetail[i].IsChecked" checked disabled />
+                    }
+                    else
+                    {
+                        <!-- Checkbox dla dostępnego miejsca (wyszarzony, disabled) -->
+                        <input type="checkbox" asp-for="SeatDetail[i].IsChecked" />
+                    }
+
+                    @Model.SeatDetail[i].NumerMiejsca
+                    <img src="~/SeatImage/@Model.SeatDetail[i].MiejsceImage" height="32" width="32" />
+                }
             </div>
-            <div class="form-group">
-                <label asp-for="NazwaKoncertu" class="control-label"></label>
-                <input asp-for="NazwaKoncertu" class="form-control" />
-                <span asp-validation-for="NazwaKoncertu" class="text-danger"></span>
-            </div> *@
-            @for (int i = 0; i < Model.SeatDetail.Count; i++)
-            {
-                <input type="hidden" asp-for="SeatDetail[i].Id" />
-
-                @if (Model.SeatDetail[i].IsChecked == true)
-                {
-                    <input asp-for="SeatDetail[i].IsChecked" disabled />
-                    @Model.SeatDetail[i].NumerMiejsca
-                    <img src="~/SeatImage/@Model.SeatDetail[i].MiejsceImage" height="32" width="32" />
-                }
-
-                @if (Model.SeatDetail[i].IsChecked == false)
-                {
-                    <input asp-for="SeatDetail[i].IsChecked" disabled />
-                    @Model.SeatDetail[i].NumerMiejsca
-                    <img src="~/SeatImage/@Model.SeatDetail[i].MiejsceImage" height="32" width="32" />
-                }
-            }
-
 
             <div class="form-group">
                 <label asp-for="KoncertDate" class="control-label"></label>
-                <input asp-for="KoncertDate" class="form-control" />
+                <input asp-for="KoncertDate" class="form-control" id="koncertDateInput" />
                 <span asp-validation-for="KoncertDate" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Zarezerwuj" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#koncertDateInput").on("change", function () {
+                var selectedDate = $(this).val();
+                var koncertId = $("#Id").val();
 
+                $.ajax({
+                    url: '/Home/GetSeatDetailsByDate',
+                    type: 'GET',
+                    data: { koncertId: koncertId, koncertDate: selectedDate },
+                    success: function (seatDetails) {
+                        updateSeatDetails(seatDetails);
+                    },
+                    error: function (error) {
+                        console.error("Błąd podczas aktualizacji miejsc:", error);
+                    }
+                });
+            });
+        });
 
+        function updateSeatDetails(seatDetails) {
+            var seatContainer = $("#seatDetailsContainer");
+            seatContainer.empty();
+
+            $.each(seatDetails, function (index, seatDetail) {
+                var seatHtml = '<input type="hidden" name="SeatDetail[' + index + '].Id" value="' + seatDetail.id + '" />';
+
+                if (seatDetail.isChecked) {
+                    // Checkbox dla miejsca zajętego (edytowalny, checked i disabled)
+                    seatHtml += '<input type="checkbox" name="SeatDetail[' + index + '].IsChecked" checked disabled />' + seatDetail.numerMiejsca;
+                } else {
+                    // Checkbox dla miejsca dostępnego (wyszarzony, disabled)
+                    seatHtml += '<input type="checkbox" name="SeatDetail[' + index + '].IsChecked" />' + seatDetail.numerMiejsca;
+                }
+
+                seatHtml += '<img src="/SeatImage/' + seatDetail.miejsceImage + '" height="32" width="32" />';
+                seatContainer.append(seatHtml);
+            });
+        }
+    </script>
+}

@@ -1,5 +1,7 @@
 using System.Diagnostics;
+using System.Security.Claims;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TicketBooking.Entities;
 using TicketBooking.Repositories.Implementations;
@@ -98,12 +100,12 @@ namespace TicketBooking.Web.Controllers
                         Id = koncertSeat.Id,
                         MiejsceImage = ((StatusMiejsca)koncertSeat.StatusMiejsca) switch
                         {
-                            StatusMiejsca.Zarezerwowane => "GreenChair.png",     // 0
-                            StatusMiejsca.Dostêpne => "RedChair.png",     // 1
-                            StatusMiejsca.Niedostêpne => "YellowChair.png", // 2
+                            StatusMiejsca.Zarezerwowane => "RedChair.png",     // 0
+                            StatusMiejsca.Dostêpne => "GreenChair.png",     // 1
+                            StatusMiejsca.Niedostêpne => "yellow.png", // 2
                             _ => "Unknown.png" // Dla nieznanego statusu
                         },
-                        IsChecked = kupbilet.Contains(koncertSeat.Id),
+                        IsChecked = koncertSeat.StatusMiejsca == StatusMiejsca.Zarezerwowane,
                         NumerMiejsca = koncertSeat.NumerMiejsca
                     });
                 }
@@ -116,6 +118,37 @@ namespace TicketBooking.Web.Controllers
                 return BadRequest($"Wyst¹pi³ b³¹d: {ex.Message}");
             }
         }
+
+        [HttpPost]
+        public async Task<IActionResult> TicketBook(KupBiletViewModel vm)
+        {
+         
+
+            // Przygotowanie listy rezerwacji
+            List<KupBilet> bookings = new List<KupBilet>();
+
+            // Pobranie wybranych miejsc (zaznaczonych checkboxów)
+            var selectedSeatIds = vm.SeatDetail.Where(x => x.IsChecked == true).Select(x => x.Id).ToList();
+            var bookingDate = vm.KoncertDate;
+
+            // Tworzenie rezerwacji dla ka¿dego wybranego miejsca
+            foreach (var seatDetailId in selectedSeatIds)
+            {
+                bookings.Add(new KupBilet
+                {
+                    Data = bookingDate,
+                    MiejscaDetailsId = seatDetailId
+                });
+            }
+
+            // Zapisanie rezerwacji w repozytorium
+            await _kupBiletRepo.SaveBooking(bookings);
+
+            // Powiadomienie u¿ytkownika o sukcesie
+            TempData["success"] = "Twoje bilety zosta³y pomyœlnie zarezerwowane!";
+            return RedirectToAction("Index");
+        }
+
 
 
 

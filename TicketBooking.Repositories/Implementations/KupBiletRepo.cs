@@ -31,5 +31,15 @@ namespace TicketBooking.Repositories.Implementations
 
             return kupbilet;
         }
+
+        public async Task SaveBooking(List<KupBilet> kupBilets)
+        {
+            // Dodanie nowych rezerwacji do bazy danych
+            await _context.KupBilet.AddRangeAsync(kupBilets);
+
+            // Zapisanie zmian w bazie danych
+            await _context.SaveChangesAsync();
+        }
+
     }
 }

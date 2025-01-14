@@ -10,6 +10,6 @@ namespace TicketBooking.Repositories.Interfaces
     public interface IKupBiletRepo
     {
         Task<IEnumerable<KupBilet>> GetTodaysKupBilet(int koncertId, DateTime dataKoncertu);
-
+        Task SaveBooking(List<KupBilet> kupBilets);
     }
 }
