@@ -20,17 +20,17 @@ namespace TicketBooking.Repositories.Implementations
 
         public async Task<IEnumerable<KupBilet>> GetTodaysKupBilet(int koncertId, DateTime koncertData)
         {
-            var today = DateTime.Today;
+            var today = koncertData.Date;
 
             var kupbilet = await _context.KupBilet
                 .Include(y => y.MiejscaDetails)
-                .ThenInclude(z => z.Koncert) 
-                .Where(x => x.Data.Date==today && 
-                x.MiejscaDetails.KoncertID==koncertId)
+                .ThenInclude(z => z.Koncert)
+                .Where(x => x.Data.Date == today && x.MiejscaDetails.KoncertID == koncertId)
                 .ToListAsync();
 
             return kupbilet;
         }
+
 
         public async Task SaveBooking(List<KupBilet> kupBilets)
         {
